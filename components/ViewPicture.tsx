@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { Wallpaper } from '@/hooks/useWallpapers';
 
-export const ViewPicture = ({ onClose }: { onClose: () => void }) => {
+export const ViewPicture = ({ onClose, data }: { onClose: () => void, data: Wallpaper }) => {
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -13,32 +14,43 @@ export const ViewPicture = ({ onClose }: { onClose: () => void }) => {
 
     // renders
     return (
-        <GestureHandlerRootView style={styles.container}>
-            <BottomSheet
-                ref={bottomSheetRef}
-                onClose={onClose}
-                snapPoints={["99%"]}
-                enablePanDownToClose={true}
-                onChange={handleSheetChanges}
-                index={1}
-                handleIndicatorStyle={{ height: 0 }}
-            >
-                <BottomSheetView style={styles.contentContainer}>
-                    <Text>Awesome 🎉</Text>
-                </BottomSheetView>
-            </BottomSheet>
-        </GestureHandlerRootView>
+        <BottomSheet
+            ref={bottomSheetRef}
+            onClose={onClose}
+            snapPoints={["99%"]}
+            enablePanDownToClose={true}
+            onChange={handleSheetChanges}
+            index={1}
+            handleIndicatorStyle={{ height: 0 }}
+            handleStyle={{ display: 'none', overflow: 'hidden' }}
+
+        >
+            <BottomSheetView style={styles.contentContainer}>
+                <Image style={styles.image} source={{ uri: data.url }} />
+                <Text>
+                    {data.title}
+                </Text>
+                <Button title='Download' />
+
+            </BottomSheetView>
+        </BottomSheet>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'red'
+    },
+    image: {
+        width: "100%",
+        height: 400,
+        borderTopLeftRadius: 13,
+        borderTopRightRadius: 13,
     },
     contentContainer: {
         flex: 1,
         alignItems: 'center',
-        padding: 26
     },
 });
 

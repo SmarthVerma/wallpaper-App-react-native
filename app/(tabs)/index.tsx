@@ -1,18 +1,39 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SafeAreaView, Text } from 'react-native';
-import LibraryScreen from "@/app/library";
-import LikedScreen from "@/app/liked";
-import SugestedScreen from "@/app/suggested";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ViewPicture } from "@/components/ViewPicture";
+import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
+import { useState } from "react";
+import { View, Text, StyleSheet, Button, Image, SafeAreaView, FlatList } from "react-native";
+import { ImageCards } from "@/components/ImageCards";
 
-const Tab = createMaterialTopTabNavigator();
 
-export default function Foryou() {
-    return (
-        <Tab.Navigator>
-            <Tab.Screen name="Suggested" component={SugestedScreen} />
-            <Tab.Screen name="Liked" component={LikedScreen} />
-            <Tab.Screen name="Library" component={LibraryScreen} />
-        </Tab.Navigator>
-    );
+
+export default function Explore() {
+    const [selectedWallpaper, setSelectedWallper] = useState<null | Wallpaper>(null)
+    const wallpapers = useWallpapers()
+
+    return <SafeAreaView style={{ flex: 1 }}>
+        <View style={{flex: 1, backgroundColor: "yellow"}} >
+            <ParallaxScrollView
+                headerBackgroundColor={{ dark: "black", light: "white" }}
+                headerImage={
+                    <Image
+                        source={{ uri: wallpapers[0]?.url }}
+                        style={{ width: '100%', height: '100%' }}
+                    />
+                }
+            >
+                <View style={{ flex: 1, flexDirection: "row" }} >
+                    <FlatList
+                        data={wallpapers}
+                        renderItem={({ item }) => <ImageCards openImage={() => setSelectedWallper(item)} wallpaper={item} />}
+                        keyExtractor={item => item.title}
+                        numColumns={2}
+                    // horizontal={true}
+                    />
+                </View>
+            </ParallaxScrollView>
+            {selectedWallpaper && <ViewPicture data={selectedWallpaper} onClose={() => setSelectedWallper(null)} />}
+        </View>
+    </SafeAreaView >
 }
 
