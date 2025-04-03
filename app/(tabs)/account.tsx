@@ -17,10 +17,8 @@ export default function Account() {
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme == 'light' ? Colors.light.background : Colors.dark.background }]}>
             <AccountHeader />
-
             <AccountSettings />
             <AccountFooter />
- 
         </SafeAreaView>
     );
 }

@@ -25,6 +25,7 @@ const SplitView: React.FC<SplitViewProps> = ({ wallpapers }) => {
                     )}
                     keyExtractor={(item) => item.title}
                     numColumns={2}
+                    nestedScrollEnabled={true}
                 // horizontal={true} // Uncomment if you want horizontal scrolling
                 />
 
